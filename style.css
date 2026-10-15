@@ -144,3 +144,21 @@ ul { list-style: none; }
 .edu { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 1.4rem; }
 @media (max-width: 600px) { .edu { grid-template-columns: 1fr; } }
 .grade { display: inline-block; margin-bottom: .6rem; padding: .2rem .7rem; border-radius: 999px; font-size: .8rem; font-weight: 700; color: #052e16; background: linear-gradient(135deg, #4ade80, #22d3ee); }
+
+/* Certificate popup */
+.cert { cursor: pointer; display: flex; flex-direction: column; }
+.cert p { flex: 1; margin-bottom: 1rem; }
+.cert .view { color: var(--accent-2); font-weight: 600; font-size: .9rem; }
+.cert .grade { align-self: flex-start; }
+#cert-modal {
+  border: 0; padding: 0; background: transparent; margin: auto;
+  max-width: min(900px, 94vw); max-height: 94vh; overflow: visible;
+}
+#cert-modal::backdrop { background: rgba(2, 6, 23, .85); backdrop-filter: blur(4px); }
+#cert-modal img { max-height: 82vh; width: auto; max-width: 100%; margin: 0 auto; border-radius: 8px; box-shadow: 0 20px 60px rgba(0, 0, 0, .6); }
+.modal-caption { text-align: center; color: var(--text); margin-top: .8rem; font-size: .95rem; }
+.modal-caption a { margin-left: .6rem; }
+.modal-close {
+  position: absolute; top: -14px; right: -14px; width: 40px; height: 40px; border-radius: 50%;
+  border: 0; background: var(--accent); color: #fff; font-size: 1.6rem; line-height: 1; cursor: pointer;
+}

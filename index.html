@@ -59,7 +59,7 @@
         { "@type": "EducationalOccupationalCredential", "name": "B.Sc. in Computer Science & Engineering (CGPA 3.97/4.00)", "credentialCategory": "degree", "recognizedBy": { "@type": "CollegeOrUniversity", "name": "Daffodil International University" } },
         { "@type": "EducationalOccupationalCredential", "name": "PHP with Laravel Framework", "credentialCategory": "certificate", "recognizedBy": { "@type": "Organization", "name": "BASIS" } },
         { "@type": "EducationalOccupationalCredential", "name": "Web Development Course", "credentialCategory": "certificate", "recognizedBy": { "@type": "Organization", "name": "DIU Computer & Programming Club" } },
-        { "@type": "EducationalOccupationalCredential", "name": "Programming for Everybody (Getting Started with Python)", "credentialCategory": "certificate", "recognizedBy": { "@type": "Organization", "name": "Coursera" } }
+        { "@type": "EducationalOccupationalCredential", "name": "Programming for Everybody (Getting Started with Python)", "credentialCategory": "certificate", "recognizedBy": { "@type": "CollegeOrUniversity", "name": "University of Michigan" }, "url": "https://coursera.org/verify/2K3MDW5HASAC" }
       ],
       "address": { "@type": "PostalAddress", "addressLocality": "Dhaka", "addressCountry": "BD" },
       "nationality": { "@type": "Country", "name": "Bangladesh" },
@@ -286,26 +286,35 @@
           </article>
         </div>
         <div class="cards certs">
-          <article class="card">
+          <a class="card cert" href="certs/english-communication-wsda.jpg" data-cert data-title="Professional English Communication Skill · Grade A+ · WSDA New Zealand">
             <span class="grade">Grade A+</span>
             <h3>Professional English Communication Skill</h3>
-            <p>WSDA New Zealand (Workplace Skills Development Academy), supported by SEIP · BASIS · Dec 2022 · Credential ID 0400036819</p>
-          </article>
-          <article class="card">
+            <p>Workplace Skills Development Academy (WSDA), New Zealand, supported by SEIP · BASIS · Issued 08 Dec 2022 · Reg. No. 0400036819</p>
+            <span class="view">View certificate →</span>
+          </a>
+          <a class="card cert" href="certs/php-laravel-basis.jpg" data-cert data-title="PHP with Laravel Framework · BASIS · SEIP">
             <h3>PHP with Laravel Framework</h3>
-            <p>BASIS (Bangladesh Association of Software & Information Services) · SEIP · Dec 2022 · Credential ID BASIS168/OID61/PHP16/21</p>
-          </article>
+            <p>BASIS, supported by SEIP (Finance Division, Govt. of Bangladesh) · 3-month, 240-hour program (Oct–Dec 2022) · Certificate No. BASIS168/OID61/PHP16/21</p>
+            <span class="view">View certificate →</span>
+          </a>
+          <a class="card cert" href="certs/python-coursera.jpg" data-cert data-title="Programming for Everybody (Python) · University of Michigan · Coursera" data-verify="https://coursera.org/verify/2K3MDW5HASAC">
+            <h3>Programming for Everybody (Python)</h3>
+            <p>University of Michigan via Coursera · Issued 19 May 2020 · Credential ID 2K3MDW5HASAC</p>
+            <span class="view">View certificate →</span>
+          </a>
           <article class="card">
             <h3>Web Development Course</h3>
             <p>DIU Computer & Programming Club · Dec 2020</p>
           </article>
-          <article class="card">
-            <h3>Programming for Everybody (Python)</h3>
-            <p>Coursera · May 2020 · Credential ID 2K3MDW5HASAC</p>
-          </article>
         </div>
       </div>
     </section>
+
+    <dialog id="cert-modal" aria-label="Certificate">
+      <button class="modal-close" aria-label="Close">×</button>
+      <img alt="">
+      <div class="modal-caption"><span></span> <a target="_blank" rel="noopener">Verify on Coursera ↗</a></div>
+    </dialog>
 
     <!-- Featured ERP work -->
     <section id="work" class="section">
@@ -411,6 +420,23 @@
   <footer class="footer">
     <div class="container">© <span id="y">2026</span> Mazharul Islam Bhuiyan · Senior Odoo Developer · Dhaka, Bangladesh</div>
   </footer>
-  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+    const modal = document.getElementById('cert-modal');
+    const modalImg = modal.querySelector('img');
+    const caption = modal.querySelector('.modal-caption span');
+    const verify = modal.querySelector('.modal-caption a');
+    document.querySelectorAll('[data-cert]').forEach(card => card.addEventListener('click', e => {
+      e.preventDefault();
+      modalImg.src = card.getAttribute('href');
+      modalImg.alt = card.dataset.title + ' certificate of Mazharul Islam Bhuiyan';
+      caption.textContent = card.dataset.title;
+      verify.hidden = !card.dataset.verify;
+      if (card.dataset.verify) verify.href = card.dataset.verify;
+      modal.showModal();
+    }));
+    modal.querySelector('.modal-close').addEventListener('click', () => modal.close());
+    modal.addEventListener('click', e => { if (e.target === modal) modal.close(); });
+  </script>
 </body>
 </html>
