@@ -143,3 +143,4 @@ ul { list-style: none; }
 @media (max-width: 600px) { .edu-main { flex-direction: column; text-align: center; } }
 .edu { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 1.4rem; }
 @media (max-width: 600px) { .edu { grid-template-columns: 1fr; } }
+.grade { display: inline-block; margin-bottom: .6rem; padding: .2rem .7rem; border-radius: 999px; font-size: .8rem; font-weight: 700; color: #052e16; background: linear-gradient(135deg, #4ade80, #22d3ee); }
