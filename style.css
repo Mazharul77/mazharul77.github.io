@@ -126,3 +126,18 @@ ul { list-style: none; }
   .hero-img { order: -1; }
   .hero-img img { width: 180px; height: 180px; }
 }
+
+/* Education */
+.edu-main { display: flex; gap: 2rem; align-items: center; margin-top: 2rem; }
+.edu-main:hover { transform: none; }
+.cgpa {
+  flex-shrink: 0; width: 130px; height: 130px; border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--accent), #0891b2);
+  box-shadow: 0 10px 30px rgba(168, 85, 247, .3);
+}
+.cgpa strong { font-size: 2.2rem; line-height: 1; }
+.cgpa span { font-size: .8rem; opacity: .9; }
+.edu-school { color: var(--accent-2) !important; font-weight: 600; margin-bottom: .3rem; }
+.certs { margin-top: 1.4rem; }
+@media (max-width: 600px) { .edu-main { flex-direction: column; text-align: center; } }
