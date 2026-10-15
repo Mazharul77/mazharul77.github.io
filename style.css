@@ -251,3 +251,8 @@ ul { list-style: none; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .js .reveal { opacity: 1; transform: none; }
 }
+
+/* Roles */
+.roles .card h3 { color: #e9d5ff; }
+.hire-line { text-align: center; margin-top: 2.2rem; color: var(--muted); }
+.hire-line strong { color: var(--text); }
