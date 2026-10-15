@@ -221,15 +221,15 @@ ul { list-style: none; }
 .scroll-hint span { position: absolute; top: 7px; left: 50%; width: 4px; height: 8px; margin-left: -2px; border-radius: 2px; background: var(--muted); animation: wheel 1.8s infinite; }
 @keyframes wheel { to { opacity: 0; transform: translateY(14px); } }
 
-/* Reveal on scroll */
-.js .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
-.js .reveal.in { opacity: 1; transform: none; }
-.js .card.reveal.in:hover { transform: translateY(-4px); }
-.hero .reveal:nth-child(2) { transition-delay: .08s; } .hero .reveal:nth-child(3) { transition-delay: .16s; }
-.hero .reveal:nth-child(4) { transition-delay: .24s; } .hero .reveal:nth-child(5) { transition-delay: .32s; }
-.hero .reveal:nth-child(6) { transition-delay: .4s; } .hero .reveal:nth-child(7) { transition-delay: .48s; }
-.js .hero-visual.reveal { transition-delay: .2s; transform: scale(.92); }
-.js .hero-visual.reveal.in { transform: none; }
+/* Reveal on scroll (animations use translate/scale, so hover transforms still work) */
+.js .reveal { opacity: 0; }
+.js .reveal.in { animation: rise .75s cubic-bezier(.2, .7, .2, 1) var(--d, 0s) both; }
+@keyframes rise { from { opacity: 0; translate: 0 28px; } to { opacity: 1; translate: 0 0; } }
+.hero .reveal:nth-child(2) { --d: .08s; } .hero .reveal:nth-child(3) { --d: .16s; }
+.hero .reveal:nth-child(4) { --d: .24s; } .hero .reveal:nth-child(5) { --d: .32s; }
+.hero .reveal:nth-child(6) { --d: .4s; } .hero .reveal:nth-child(7) { --d: .48s; }
+.js .hero-visual.reveal.in { animation: pop 1s cubic-bezier(.2, .7, .2, 1) .2s both; }
+@keyframes pop { from { opacity: 0; scale: .85; } to { opacity: 1; scale: 1; } }
 
 @media (max-width: 900px) {
   .hero { min-height: auto; padding: 3rem 0 5rem; }
@@ -243,12 +243,75 @@ ul { list-style: none; }
   .scroll-hint { display: none; }
 }
 @media (max-width: 420px) { .chip { font-size: .7rem; } .float-card { font-size: .75rem; } }
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; }
-  .js .reveal { opacity: 1; transform: none; }
-}
+
 
 /* Roles */
 .roles .card h3 { color: #e9d5ff; }
 .hire-line { text-align: center; margin-top: 2.2rem; color: var(--muted); }
 .hire-line strong { color: var(--text); }
+
+/* ================= Section animations ================= */
+.progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 100; transform-origin: 0 50%; transform: scaleX(0);
+  background: linear-gradient(90deg, var(--accent), var(--accent-2), #db2777); box-shadow: 0 0 12px rgba(168, 85, 247, .7); }
+
+/* Section titles: underline grows in */
+.js .section-title::after { width: 0; transition: width .9s cubic-bezier(.2, .7, .2, 1) .2s; }
+.js .section-title.in::after { width: 72px; }
+
+/* Drifting glow behind alternate sections */
+.section { position: relative; overflow: hidden; }
+.section > .container { position: relative; z-index: 1; }
+.section.alt::before, .section.alt::after { content: ""; position: absolute; border-radius: 50%; filter: blur(90px); opacity: .18; pointer-events: none; animation: drift 24s ease-in-out infinite alternate; }
+.section.alt::before { width: 420px; height: 420px; background: #7c3aed; top: -120px; right: -100px; }
+.section.alt::after { width: 360px; height: 360px; background: #0891b2; bottom: -140px; left: -80px; animation-duration: 30s; }
+
+/* Cards: spotlight, glowing border, icon */
+.card { position: relative; overflow: hidden; isolation: isolate; transition: transform .3s, border-color .3s, box-shadow .3s; }
+.card::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity .3s;
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), rgba(168, 85, 247, .18), transparent 45%); }
+.card:hover::before { opacity: 1; }
+.card:hover { transform: translateY(-6px); border-color: rgba(168, 85, 247, .7); box-shadow: 0 18px 40px rgba(0, 0, 0, .35), 0 0 30px rgba(168, 85, 247, .18); }
+.ico { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 1rem; color: #d8b4fe;
+  background: linear-gradient(135deg, rgba(168, 85, 247, .22), rgba(34, 211, 238, .18)); border: 1px solid rgba(168, 85, 247, .35);
+  transition: transform .45s cubic-bezier(.3, 1.6, .5, 1), color .3s; }
+.card:hover .ico { transform: rotate(-10deg) scale(1.12); color: var(--accent-2); }
+
+/* Skill tags pop in one by one */
+.js .card.reveal .tags li { opacity: 0; scale: .7; }
+.js .card.reveal.in .tags li { animation: tagpop .45s cubic-bezier(.3, 1.6, .5, 1) calc(var(--d, 0s) + .25s + var(--i, 0) * 45ms) both; }
+@keyframes tagpop { to { opacity: 1; scale: 1; } }
+.tags li { transition: background .2s, color .2s, translate .2s; }
+.tags li:hover { background: rgba(34, 211, 238, .18); color: #a5f3fc; translate: 0 -2px; }
+
+/* Timeline draws as you scroll */
+.timeline { position: relative; }
+.timeline::before { content: ""; position: absolute; left: -2px; top: 0; width: 2px; height: calc(var(--prog, 0) * 100%);
+  background: linear-gradient(var(--accent), var(--accent-2)); box-shadow: 0 0 10px rgba(168, 85, 247, .8); }
+.timeline > li::before { transition: transform .3s; }
+.timeline > li.in::before { animation: dot 2.4s ease-out infinite; }
+@keyframes dot { 0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, .6); } 70%, 100% { box-shadow: 0 0 0 12px rgba(168, 85, 247, 0); } }
+.timeline > li { padding: 1.2rem 1.4rem; margin: 0 0 .6rem -1.4rem; border-radius: var(--radius); transition: background .3s; }
+.timeline > li::before { left: calc(-2rem - 8px + 1.4rem); top: 1.65rem; }
+.timeline > li:hover { background: rgba(22, 33, 58, .6); }
+
+/* CGPA progress rings */
+@property --p { syntax: "<number>"; inherits: false; initial-value: 0; }
+.cgpa { --p: 0; transition: --p 1.8s cubic-bezier(.2, .7, .2, 1) .2s; box-shadow: 0 0 40px rgba(168, 85, 247, .25);
+  background: radial-gradient(closest-side, var(--card) 80%, transparent 81% 100%),
+              conic-gradient(var(--accent-2), var(--accent) calc(var(--p) * 1%), rgba(148, 163, 184, .15) 0); }
+.in .cgpa, .edu-main.in .cgpa { --p: var(--t); }
+.cgpa strong { background: linear-gradient(90deg, #fff, #c4b5fd); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* Certificate grade badge shimmer */
+.grade { background-size: 200% auto; animation: shine 3s linear infinite; background-image: linear-gradient(90deg, #4ade80, #22d3ee, #4ade80); }
+
+/* Contact heading shimmer */
+.contact .section-title { background: linear-gradient(90deg, #fff, #c084fc, #22d3ee, #fff); background-size: 250% auto;
+  -webkit-background-clip: text; background-clip: text; color: transparent; animation: shine 6s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .js .reveal, .js .card.reveal .tags li { opacity: 1; scale: 1; translate: none; }
+  .cgpa { --p: var(--t); }
+  .js .section-title::after { width: 72px; }
+}
