@@ -141,3 +141,5 @@ ul { list-style: none; }
 .edu-school { color: var(--accent-2) !important; font-weight: 600; margin-bottom: .3rem; }
 .certs { margin-top: 1.4rem; }
 @media (max-width: 600px) { .edu-main { flex-direction: column; text-align: center; } }
+.edu { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 1.4rem; }
+@media (max-width: 600px) { .edu { grid-template-columns: 1fr; } }
